@@ -1,4 +1,5 @@
 #!/usr/bin/python
+#test change for git commit
 '''
 boto3 is used as the interface to aws instead of the CLI version aws
 need to add functions and store info from for loop posibly so can retreive it later?
