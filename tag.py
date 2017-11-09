@@ -15,9 +15,6 @@ os.environ['AWS_SHARED_CREDENTIALS_FILE'] = '~/.aws/credentials'
 # uses saml profile to authenticate to AWS from above file
 session = boto3.Session(profile_name='saml')
 boto3.setup_default_session(profile_name='saml')
-'''stuff I was doing before I moved to boto3, was based on aws cli'''
-# aws = 'aws --profile saml'
-# aws --profile saml ec2 create-tags --resources i-03127918b624fc28b --tags 'Key=Name,Value=netmaster'
 '''this is for EC2 stuff  there are other calls needed for S3 etc...'''
 ec2 = boto3.resource('ec2')
 '''
