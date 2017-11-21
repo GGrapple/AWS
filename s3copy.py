@@ -22,10 +22,14 @@ file_key = sys.argv[1]
 dest_bucket_region = 'us-gov-west-1'
 
 client = boto3.client('s3', dest_bucket_region)
-response = client.put_object(
-    Bucket=dest_bucket_name,
-    Key=file_key,
-    ServerSideEncryption='aws:kms',
-    StorageClass='STANDARD',
-    SSEKMSKeyId=kms_key
+
+response = client.upload_file(
+    file_key,
+    dest_bucket_name,
+    file_key,
+    ExtraArgs={
+        'ServerSideEncryption':'aws:kms',
+        'SSEKMSKeyId':kms_key
+        }
     )
+
