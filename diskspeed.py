@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
-import time, os, sys
+import time, os, sys, csv
+
+csv_file = 'FILENAME.csv'
 
 def writetofile(filename,mysizeMB):
 	# writes string to specified file repeatdely, until mysizeMB is reached. Then deletes fle 
@@ -21,7 +23,7 @@ def writetofile(filename,mysizeMB):
 def diskspeedmeasure(dirname):
 	# returns writing speed to dirname in MB/s
 	# method: keep writing a file, until 0.5 seconds is passed. Then divide bytes written by time passed
-	filesize = 1	# in MB
+	filesize = 1000	# in MB
 	maxtime = 0.5 	# in sec
 	filename = os.path.join(dirname,'outputTESTING.txt')
 	start = time.time()
@@ -38,31 +40,34 @@ def diskspeedmeasure(dirname):
 	return (loopcounter*filesize)/diff
 
 ############## Start of main
-
+attempt = 0
 
 if __name__ == "__main__":
-
-	print "Let's go"
-
-	if len(sys.argv) >= 2:
-		dirname = sys.argv[1]
-		if not os.path.isdir(dirname): 
-			print "Specified argument is not a directory. Bailing out"
-			sys.exit(1)
-	else:
-		# no argument, so use current working directory
-		dirname = os.getcwd()
-		print "Using current working directory"
-
-	try:
-		speed = diskspeedmeasure(dirname)
-		print("Disk writing speed: %.2f Mbytes per second" % speed)
-	except IOError, e:
-		#print "IOError:", e
-		if e.errno == 13:
-			print "Could not create test file. Check that you have write rights to directory", dirname
-	except:
-		print "Something else went wrong"
-		raise
-
-	print "Done"
+	while (attempt < 100)
+		print "Let's go"
+		if len(sys.argv) >= 2:
+			dirname = sys.argv[1]
+			if not os.path.isdir(dirname):
+				print "Specified argument is not a directory. Bailing out"
+				sys.exit(1)
+		else:
+			# no argument, so use current working directory
+			dirname = os.getcwd()
+			print "Using current working directory"
+		try:
+			speed = diskspeedmeasure(dirname)
+			attempt += 1
+			print("This is the raw speed " + str(speed) + " attempt " + str(attempt))
+			print("Disk writing speed: %.2f Mbytes per second" % speed)
+			with open(csv_file, 'a') as f:
+				writer = csv.writer(f)
+				row = str(attempt) + ',' + str(speed)
+				writer.writerow([row])
+		except IOError, e:
+			#print "IOError:", e
+			if e.errno == 13:
+				print "Could not create test file. Check that you have write rights to directory", dirname
+		except:
+			print "Something else went wrong"
+			raise
+		print "Done"
